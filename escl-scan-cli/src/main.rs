@@ -33,7 +33,8 @@ fn main() {
                 .short('d')
                 .long("dpi")
                 .help("Scan resolution")
-                .default_value("75"),
+                .default_value("75")
+                .value_parser(clap::value_parser!(i16)),
         )
         .arg(
             Arg::new("force")
