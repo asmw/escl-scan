@@ -48,13 +48,23 @@ fn main() {
     let scanner_base_path = format!("http://{}:80/eSCL", ip);
     let scan_resolution = matches.get_one::<i16>("dpi").unwrap();
     let destination_file = matches.get_one::<String>("destination file").unwrap();
+    let dest_path = Path::new(destination_file);
 
-    if !matches.contains_id("force") && Path::new(destination_file).exists() {
+    let dest_ext = dest_path.extension().and_then(std::ffi::OsStr::to_str).unwrap().to_lowercase();
+    let allowed_exts = ["pdf", "jpg", "jpeg"];
+
+    if !allowed_exts.contains(&dest_ext.as_str()) {
+        eprintln!("Allowed output extensions are: {:?}", allowed_exts);
+        exit(1);
+    }
+
+    if !matches.contains_id("force") && dest_path.exists() {
         eprintln!("Output file exists! Exiting...");
         exit(1);
     }
 
-    scan::scan(&scanner_base_path, *scan_resolution, destination_file);
+
+    scan::scan(&scanner_base_path, *scan_resolution, dest_path);
 
     println!("Done!");
 }

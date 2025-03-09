@@ -124,4 +124,6 @@ pub struct ScanSettings {
     pub x_resolution: i16,
     #[serde(rename = "scan:YResolution")]
     pub y_resolution: i16,
+    #[serde(rename = "scan:DocumentFormatExt")]
+    pub document_format: String,
 }
